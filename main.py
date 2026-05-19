@@ -8,8 +8,7 @@ import time
 app = FastAPI()
 latest_data = {}
 
-# 도커 서비스 이름인 'mosquitto'를 호스트로 사용
-MQTT_HOST = os.getenv("MQTT_BROKER_HOST", "mosquitto")
+MQTT_HOST = os.getenv("MQTT_BROKER_HOST", "localhost")
 
 def on_message(client, userdata, msg):
     global latest_data
@@ -37,7 +36,7 @@ while not connected:
         print(f"Failed to connect to MQTT, retrying in 2s... ({e})")
         time.sleep(2)
 
-mqtt_client.subscribe("sensor/mpu6050")
+mqtt_client.subscribe("sensor/mpu6050/raw")
 mqtt_client.loop_start()
 
 @app.get("/")
